@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Neighborhood Data Visualization Map</title>
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #map_canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script src="http://maps.googleapis.com/maps/api/js?libraries=geometry,visualization&sensor=true"></script>
+
+<script>
+  // The web service URL from Drive 'Deploy as web app' dialog.
+  var DATA_SERVICE_URL = "https://script.google.com/a/macros/coeverywhere.com/s/AKfycbwqy7FkHOV3QZQ4TjVadn3FPWqMGTbknLWLxjx1c_0Aby-4MSI/exec?jsonp=callback";
+
+  var map;
+  var heatmapData = [ ];
+
+  function initialize() {
+    map = new google.maps.Map(document.getElementById('map_canvas'), {
+      center: new google.maps.LatLng(37.09024, -95.712891),
+      zoom: 3,
+      maxZoom: 20,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+    var scriptElement = document.createElement('script');
+    scriptElement.src = DATA_SERVICE_URL;
+    document.getElementsByTagName('head')[0].appendChild(scriptElement);
+  }
+
+function callback(data) {
+
+    var heatmapData = [ ];
+
+   for ( var i = 0; i < data.length; i++ ) {
+    heatmapData.push( new google.maps.LatLng( data[i][0], data[i][1] ) );
+}
+
+
+var heatmap = new google.maps.visualization.HeatmapLayer( {
+    data : heatmapData
+
+} );
+
+
+ }
+
+</script>
+</head>
+
+  <body onload="initialize()">
+    <div id="map_canvas"></div>
+
+  </body>
+</html>
